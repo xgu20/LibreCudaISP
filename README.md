@@ -49,13 +49,15 @@ Click any image to view the LibreCudaISP output at full resolution.
   <a href="docs/assets/infinite/Outdoor1.png"><img src="docs/assets/infinite/Outdoor1.png" alt="Outdoor ISP output 1" width="49%"></a>
   <a href="docs/assets/infinite/Outdoor2.png"><img src="docs/assets/infinite/Outdoor2.png" alt="Outdoor ISP output 2" width="49%"></a>
   <a href="docs/assets/infinite/Outdoor3.png"><img src="docs/assets/infinite/Outdoor3.png" alt="Outdoor ISP output 3" width="49%"></a>
+  <a href="docs/assets/infinite/Outdoor4.png"><img src="docs/assets/infinite/Outdoor4.png" alt="Outdoor ISP output 4" width="49%"></a>
 </p>
 
 Compare with the upstream Infinite-ISP reference outputs:
 [Indoor1](https://github.com/10x-Engineers/Infinite-ISP/blob/main/assets/Indoor1.png),
 [Outdoor1](https://github.com/10x-Engineers/Infinite-ISP/blob/main/assets/Outdoor1.png),
-[Outdoor2](https://github.com/10x-Engineers/Infinite-ISP/blob/main/assets/Outdoor2.png), and
-[Outdoor3](https://github.com/10x-Engineers/Infinite-ISP/blob/main/assets/Outdoor3.png).
+[Outdoor2](https://github.com/10x-Engineers/Infinite-ISP/blob/main/assets/Outdoor2.png),
+[Outdoor3](https://github.com/10x-Engineers/Infinite-ISP/blob/main/assets/Outdoor3.png), and
+[Outdoor4](https://github.com/10x-Engineers/Infinite-ISP/blob/main/assets/Outdoor4.png).
 [Browse all upstream assets](https://github.com/10x-Engineers/Infinite-ISP/tree/main/assets).
 
 ## Pipeline
