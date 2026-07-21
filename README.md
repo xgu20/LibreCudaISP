@@ -13,6 +13,13 @@ supports MIPI RAW10 and unpacked RAW, all four common Bayer patterns, automatic
 white balance, demosaicing, color correction, tone mapping, denoising, and
 per-stage timing.
 
+## Pipeline
+
+![LibreCudaISP CUDA camera ISP pipeline](docs/pipeline.svg)
+
+The colored groups mark the Bayer, RGB, and YUV processing domains. Dark blocks
+are pixel-format or color-space transitions.
+
 ## Quick start
 
 You need an NVIDIA GPU, CUDA Toolkit 11+, CMake 3.25+, a C++17 compiler, and
@@ -59,13 +66,6 @@ Compare with the upstream Infinite-ISP reference outputs:
 [Outdoor3](https://github.com/10x-Engineers/Infinite-ISP/blob/main/assets/Outdoor3.png), and
 [Outdoor4](https://github.com/10x-Engineers/Infinite-ISP/blob/main/assets/Outdoor4.png).
 [Browse all upstream assets](https://github.com/10x-Engineers/Infinite-ISP/tree/main/assets).
-
-## Pipeline
-
-![LibreCudaISP CUDA camera ISP pipeline](docs/pipeline.svg)
-
-The colored groups mark the Bayer, RGB, and YUV processing domains. Dark blocks
-are pixel-format or color-space transitions.
 
 ## Data and tuning
 
