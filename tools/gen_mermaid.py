@@ -21,9 +21,11 @@ def main():
     data = {
         "code": mmd_text,
         "mermaid": {
-            "theme": "default",
+            "theme": "base",
             "themeVariables": {
-                "fontSize": "16px"
+                "fontFamily": "Arial, Helvetica, sans-serif",
+                "fontSize": "15px",
+                "lineColor": "#94A3B8"
             }
         }
     }
@@ -42,7 +44,26 @@ def main():
         )
         with urllib.request.urlopen(req) as response:
             svg_data = response.read()
-            
+
+        # Mermaid SVGs are transparent by default. An explicit white canvas
+        # keeps dark transition cards readable in GitHub's dark theme.
+        svg_open_end = svg_data.find(b">")
+        if svg_open_end == -1:
+            raise ValueError("The Mermaid response is not a valid SVG")
+        background = b'<rect width="100%" height="100%" fill="#FFFFFF"/>'
+        svg_data = (
+            svg_data[: svg_open_end + 1]
+            + background
+            + svg_data[svg_open_end + 1 :]
+        )
+
+        # The renderer can retain Mermaid's legacy default even when a font
+        # family is supplied in the render configuration.
+        svg_data = svg_data.replace(
+            b'--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;',
+            b'--mermaid-font-family:Arial,Helvetica,sans-serif;',
+        )
+
         print(f"Saving compiled SVG to {svg_path}...")
         with open(svg_path, "wb") as f:
             f.write(svg_data)
