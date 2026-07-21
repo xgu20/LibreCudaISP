@@ -1,9 +1,19 @@
 # LibreCudaISP
 
-An open-source, CUDA-accelerated camera image signal processing pipeline for
-learning, experimentation, and performance analysis. It reads Bayer RAW data
-with a JSON sidecar, processes the frame on the GPU, and writes an 8-bit RGB
-PNG.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+![CUDA 11+](https://img.shields.io/badge/CUDA-11%2B-76B900?logo=nvidia&logoColor=white)
+![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C?logo=cplusplus)
+
+**LibreCudaISP is an open-source camera image signal processor (ISP) written
+in CUDA C++ for NVIDIA GPUs.** It converts Bayer RAW sensor captures—including
+MIPI RAW10 and unpacked RAW—into RGB images with a GPU-accelerated pipeline.
+
+The project implements common camera ISP stages such as black-level
+correction, dead-pixel correction, lens shading correction, automatic white
+balance (AWB), Bayer demosaicing, color correction matrices (CCM), tone
+mapping, gamma correction, YUV denoising, and edge enhancement. It is designed
+for RAW image processing experiments, camera algorithm development, CUDA
+optimization, and per-stage performance benchmarking.
 
 > [!NOTE]
 > This is an experimental ISP, not a production pipeline calibrated for every
