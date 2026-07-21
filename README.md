@@ -13,10 +13,6 @@ supports MIPI RAW10 and unpacked RAW, all four common Bayer patterns, automatic
 white balance, demosaicing, color correction, tone mapping, denoising, and
 per-stage timing.
 
-> [!NOTE]
-> LibreCudaISP is an experimental reference pipeline. Accurate color requires
-> tuning for the target sensor and capture conditions.
-
 ## Quick start
 
 You need an NVIDIA GPU, CUDA Toolkit 11+, CMake 3.25+, a C++17 compiler, and
