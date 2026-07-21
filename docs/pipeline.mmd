@@ -1,20 +1,49 @@
-graph LR
-    %% Style Definitions (Curated Pastel Palette)
-    classDef raw fill:#E0F2F1,stroke:#00796B,stroke-width:1.5px,rx:8px,ry:8px,color:#004D40,font-weight:bold,font-family:Helvetica;
-    classDef trans fill:#FFF9C4,stroke:#FBC02D,stroke-width:1.5px,rx:8px,ry:8px,color:#F57F17,font-weight:bold,font-family:Helvetica;
-    classDef rgb fill:#FFEBEE,stroke:#D32F2F,stroke-width:1.5px,rx:8px,ry:8px,color:#B71C1C,font-weight:bold,font-family:Helvetica;
-    classDef nonlinear fill:#F3E5F5,stroke:#7B1FA2,stroke-width:1.5px,rx:8px,ry:8px,color:#4A148C,font-weight:bold,font-family:Helvetica;
+flowchart TB
+    %% LibreCudaISP processing domains and format transitions.
+    classDef io fill:#ECEFF1,stroke:#455A64,stroke-width:1.5px,color:#263238,font-weight:bold;
+    classDef bayer fill:#E0F2F1,stroke:#00796B,stroke-width:1.5px,color:#004D40,font-weight:bold;
+    classDef rgb fill:#FFEBEE,stroke:#D32F2F,stroke-width:1.5px,color:#B71C1C,font-weight:bold;
+    classDef yuv fill:#E8EAF6,stroke:#3949AB,stroke-width:1.5px,color:#1A237E,font-weight:bold;
+    classDef convert fill:#FFF9C4,stroke:#F9A825,stroke-width:1.8px,color:#F57F17,font-weight:bold;
 
-    %% Nodes
-    Unpack("Raw Unpack"):::raw
-    BLC("Black Level"):::raw
-    DPC("Dead Pixel"):::raw
-    LSC("Lens Shading"):::raw
-    WB("White Balance"):::raw
-    Demosaic("Demosaic"):::trans
-    CCM("Color Matrix"):::rgb
-    Gamma("Gamma"):::nonlinear
-    Pack("Output Pack"):::nonlinear
+    subgraph BayerDomain["Bayer domain · 1 channel"]
+        direction LR
+        Unpack("Raw Unpack<br/>MIPI RAW10 / unpacked"):::bayer
+        BLC("Black-Level<br/>Correction"):::bayer
+        OECF("Sensor Linearization<br/>(OECF)"):::bayer
+        DPC("Dead-Pixel<br/>Correction"):::bayer
+        LSC("Lens Shading<br/>Correction"):::bayer
+        WB("White Balance<br/>Gray World / Manual"):::bayer
+        Unpack --> BLC --> OECF --> DPC --> LSC --> WB
+    end
 
-    %% Connections
-    Unpack --> BLC --> DPC --> LSC --> WB --> Demosaic --> CCM --> Gamma --> Pack
+    Demosaic("Demosaic<br/>Bayer → RGB float"):::convert
+
+    subgraph RGBDomain["RGB domain · 3-channel float"]
+        direction LR
+        CCM("Color Correction<br/>Matrix"):::rgb
+        Tone("Global Tone Mapping<br/>(ACES)"):::rgb
+        Gamma("Gamma Correction<br/>(sRGB)"):::rgb
+        CCM --> Tone --> Gamma
+    end
+
+    RGB2YUV("Color Conversion<br/>RGB → YUV float"):::convert
+
+    subgraph YUVDomain["YUV domain · 3-channel float"]
+        direction LR
+        Denoise("YUV Denoise"):::yuv
+        Edge("Edge Enhancement"):::yuv
+        Denoise --> Edge
+    end
+
+    Pack("Output Pack<br/>YUV/RGB float → RGB u8"):::convert
+    Output("RGB PNG output"):::io
+
+    WB --> Demosaic --> CCM
+    Gamma --> RGB2YUV --> Denoise
+    Edge --> Pack --> Output
+    Gamma -. "YUV stages bypassed" .-> Pack
+
+    style BayerDomain fill:#F3FBFA,stroke:#80CBC4,stroke-width:2px
+    style RGBDomain fill:#FFF7F8,stroke:#EF9A9A,stroke-width:2px
+    style YUVDomain fill:#F5F6FF,stroke:#9FA8DA,stroke-width:2px
